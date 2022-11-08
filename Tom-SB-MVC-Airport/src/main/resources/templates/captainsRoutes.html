@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<a href="/">vissza</a>
+	<hr>
+	<div th:each="entry:${captainsRoutes.entrySet()}">
+		<p th:text="${entry.getKey()}"></p>
+		<p th:text="${entry.getValue()}"></p>
+		<hr>
+	</div>
+	<h4
+		th:text="${captain} +' - közvetve jutott vissza az indulási városába'">
+	</h4>
+</body>
+</html>
