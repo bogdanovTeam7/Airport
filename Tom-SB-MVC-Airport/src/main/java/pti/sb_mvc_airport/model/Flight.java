@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.logging.log4j.message.ReusableMessage;
+
 @Entity
 @Table(name = "flights")
 public class Flight {
@@ -106,10 +108,20 @@ public class Flight {
 
 	public String getFlightTimeAsString() {
 		long intervalInsec = getFlightTimeInSec();
-
 		long hour = intervalInsec / 3600;
 		long min = (intervalInsec % 3600) / 60;
 		return String.format("%02d:%02d", hour, min);
+	}
+
+	public String getWaitingTimeAsString(Flight nextFlight) {
+		long intervalInsec = (nextFlight.getDateFrom().getTime() - dateTo.getTime()) / 1000;
+		String result = "nincs várakozási idő";
+		if (intervalInsec > 0) {
+			long hour = intervalInsec / 3600;
+			long min = (intervalInsec % 3600) / 60;
+			result = String.format("%02d:%02d", hour, min);
+		}
+		return result;
 	}
 
 	@Override

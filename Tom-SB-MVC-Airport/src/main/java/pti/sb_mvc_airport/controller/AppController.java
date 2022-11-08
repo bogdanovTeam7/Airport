@@ -2,6 +2,7 @@ package pti.sb_mvc_airport.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import pti.sb_mvc_airport.db.Database;
 import pti.sb_mvc_airport.model.Flight;
@@ -95,5 +97,41 @@ public class AppController {
 		model.addAttribute("captain", captain);
 		model.addAttribute("captainsRoutes", captainsRoutes);
 		return "captainsRoutes.html";
+	}
+
+	@GetMapping("/route/{from}/{to}")
+	public String routeFromTo(Model model, @PathVariable String from, @PathVariable String to) {
+		Database db = new Database();
+		List<Flight> flights = db.getAllFlights();
+		db.close();
+
+		String cityFrom = from;
+		ArrayList<Flight> route = new ArrayList<>();
+		for (Flight flight : flights) {
+			if (flight.getCityFrom().equals(cityFrom)) {
+				route.add(flight);
+				cityFrom = flight.getCityTo();
+				if (cityFrom.equals(to)) {
+					break;
+				}
+			}
+		}
+
+		LinkedHashMap<Flight, String> routeWithWaitingTime = new LinkedHashMap<>();
+		for (int i = 0; i < route.size(); i++) {
+			Flight flight = route.get(i);
+			String waitingTimeAsString = null;
+			if (i < route.size() - 1) {
+				waitingTimeAsString = flight.getWaitingTimeAsString(route.get(i + 1));
+			}
+
+			routeWithWaitingTime.put(flight, waitingTimeAsString);
+		}
+
+		model.addAttribute("route", route);
+		model.addAttribute("routeWithWaitingTime", routeWithWaitingTime);
+		model.addAttribute("from", from);
+		model.addAttribute("to", to);
+		return "route.html";
 	}
 }

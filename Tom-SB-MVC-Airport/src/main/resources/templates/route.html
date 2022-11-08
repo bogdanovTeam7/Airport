@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<a href="/">vissza</a>
+	<p th:text="${from}"></p>
+	<p th:text="${to}"></p>
+	<hr>
+	<div th:each="entry:${routeWithWaitingTime.entrySet()}">
+		<p th:text="${entry.getKey()}"></p>
+		<p th:if="${entry.getValue()}"
+			th:text="'várakozás: '+${entry.getValue()}"></p>
+		<hr>
+	</div>
+</body>
+</html>
