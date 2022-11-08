@@ -1,5 +1,8 @@
 package pti.sb_mvc_airport.model;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -93,10 +96,28 @@ public class Flight {
 		this.captain = captain;
 	}
 
+	public long getFlightTimeInSec() {
+		return (dateTo.getTime() - dateFrom.getTime()) / 1000;
+	}
+
+	public long getFlightTimeInMin() {
+		return (dateTo.getTime() - dateFrom.getTime()) / (1000 * 60);
+	}
+
+	public String getFlightTimeAsString() {
+		long intervalInsec = getFlightTimeInSec();
+
+		long hour = intervalInsec / 3600;
+		long min = (intervalInsec % 3600) / 60;
+		return String.format("%02d:%02d", hour, min);
+	}
+
 	@Override
 	public String toString() {
-		return "Flight [id=" + id + ", cityFrom=" + cityFrom + ", cityTo=" + cityTo + ", dateFrom=" + dateFrom
-				+ ", dateTo=" + dateTo + ", flightId=" + flightId + ", captain=" + captain + "]";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return "Flight [id=" + id + ", cityFrom=" + cityFrom + ", cityTo=" + cityTo + ", dateFrom="
+				+ dateFormat.format(dateFrom) + ", dateTo=" + dateFormat.format(dateTo) + ", flightId=" + flightId
+				+ ", captain=" + captain + ", getFlightTimeAsString()=" + getFlightTimeAsString() + "]";
 	}
 
 }

@@ -6,8 +6,11 @@
 </head>
 <body>
 	<a href="/">vissza</a>
-	<div th:each="flight:${flights}">
-		<p th:text="${flight}"></p>
+	<hr>
+	<div th:each="entry:${captains.entrySet()}">
+		<p th:text="${entry.getKey()}"></p>
+		<p th:text="${entry.getValue()}+' perc'"></p>
+		<hr>
 	</div>
 </body>
 </html>
