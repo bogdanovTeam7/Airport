@@ -70,9 +70,7 @@ public class AppController {
 				cities.add(cityTo);
 			} else {
 				cities = captainsRoutes.get(captain);
-				if (cities.size() < 2) {
-					cities.add(cityTo);
-				} else if (!cities.get(0).equals(cities.get(cities.size() - 1))) {
+				if (!cities.get(0).equals(cities.get(cities.size() - 1))) {
 					cities.add(cityTo);
 				}
 			}
